@@ -1,32 +1,27 @@
 const Game = require('../modules/Game.class');
-
 const game = new Game();
 
-const field = document.querySelector('.game-field');
+const cells = document.querySelectorAll('.field-cell');
 const scoreEl = document.querySelector('.game-score');
-const startBtn = document.querySelector('.button.start');
+const startBtn = document.querySelector('.button');
 const messageLose = document.querySelector('.message-lose');
 const messageWin = document.querySelector('.message-win');
 const messageStart = document.querySelector('.message-start');
 
 function render() {
-  field.innerHTML = '';
+  const state = game.getState().flat();
 
-  game
-    .getState()
-    .flat()
-    .forEach((value) => {
-      const cell = document.createElement('div');
+  state.forEach((value, index) => {
+    const cell = cells[index];
 
-      cell.className = 'field-cell';
+    cell.textContent = '';
+    cell.className = 'field-cell';
 
-      if (value) {
-        cell.textContent = value;
-        cell.classList.add(`field-cell--${value}`);
-      }
-
-      field.appendChild(cell);
-    });
+    if (value !== 0) {
+      cell.textContent = value;
+      cell.classList.add(`field-cell--${value}`);
+    }
+  });
 
   scoreEl.textContent = game.getScore();
 
@@ -44,11 +39,12 @@ function render() {
 
 startBtn.addEventListener('click', () => {
   if (game.getStatus() === 'idle') {
+    game.start();
     messageStart.classList.add('hidden');
+
     startBtn.textContent = 'Restart';
     startBtn.classList.remove('start');
     startBtn.classList.add('restart');
-    game.start();
   } else {
     game.restart();
   }
@@ -57,6 +53,10 @@ startBtn.addEventListener('click', () => {
 });
 
 document.addEventListener('keydown', (e) => {
+  if (game.getStatus() !== 'playing') {
+    return;
+  }
+
   let moved = false;
 
   switch (e.key) {

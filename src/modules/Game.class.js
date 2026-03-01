@@ -4,8 +4,13 @@ class Game {
     this.score = 0;
     this.status = 'idle';
 
-    this.board =
-      initialState || Array.from({ length: 4 }, () => Array(4).fill(0));
+    // Начальное поле с фиксированными числами 2, 4, 8 и 16
+    this.board = initialState || [
+      [0, 0, 0, 0], // Первая строка с числами 2, 4, 8, 16
+      [0, 0, 0, 0], // Пустая строка
+      [0, 0, 0, 0], // Пустая строка
+      [0, 0, 0, 0], // Пустая строка
+    ];
   }
 
   start() {
@@ -14,15 +19,21 @@ class Game {
     }
 
     this.status = 'playing';
-    this.addRandomTile();
-    this.addRandomTile();
+    this.addRandomTile(); // Добавляем случайную плитку после старта игры
+    this.addRandomTile(); // Добавляем еще одну случайную плитку
   }
 
   restart() {
     this.score = 0;
     this.status = 'idle';
-    this.board = Array.from({ length: 4 }, () => Array(4).fill(0));
-    this.start();
+
+    this.board = [
+      [0, 0, 0, 0], // Начинаем с фиксированными числами
+      [0, 0, 0, 0], // Пустая строка
+      [0, 0, 0, 0], // Пустая строка
+      [0, 0, 0, 0], // Пустая строка
+    ];
+    this.start(); // Перезапускаем игру
   }
 
   getState() {
@@ -84,7 +95,7 @@ class Game {
     }
 
     this.board = newBoard;
-    this.addRandomTile();
+    this.addRandomTile(); // Добавляем новую плитку
 
     if (this.has2048()) {
       this.status = 'win';
@@ -125,6 +136,7 @@ class Game {
   addRandomTile() {
     const empty = [];
 
+    // Находим пустые клетки
     for (let i = 0; i < 4; i++) {
       for (let j = 0; j < 4; j++) {
         if (this.board[i][j] === 0) {
@@ -139,6 +151,7 @@ class Game {
 
     const [x, y] = empty[Math.floor(Math.random() * empty.length)];
 
+    // Добавляем плитку 2 или 4
     this.board[x][y] = Math.random() < 0.9 ? 2 : 4;
   }
 
@@ -150,20 +163,20 @@ class Game {
     for (let i = 0; i < 4; i++) {
       for (let j = 0; j < 4; j++) {
         if (this.board[i][j] === 0) {
-          return true;
+          return true; // Если есть пустая клетка
         }
 
         if (j < 3 && this.board[i][j] === this.board[i][j + 1]) {
-          return true;
+          return true; // Если есть одинаковые плитки по горизонтали
         }
 
         if (i < 3 && this.board[i][j] === this.board[i + 1][j]) {
-          return true;
+          return true; // Если есть одинаковые плитки по вертикали
         }
       }
     }
 
-    return false;
+    return false; // Если нет возможных ходов
   }
 }
 

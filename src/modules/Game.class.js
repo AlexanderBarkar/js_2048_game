@@ -6,10 +6,10 @@ class Game {
 
     // Начальное поле с фиксированными числами 2, 4, 8 и 16
     this.board = initialState || [
-      [0, 0, 0, 0], // Первая строка с числами 2, 4, 8, 16
-      [0, 0, 0, 0], // Пустая строка
-      [0, 0, 0, 0], // Пустая строка
-      [0, 0, 0, 0], // Пустая строка
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
     ];
   }
 
@@ -19,8 +19,8 @@ class Game {
     }
 
     this.status = 'playing';
-    this.addRandomTile(); // Добавляем случайную плитку после старта игры
-    this.addRandomTile(); // Добавляем еще одну случайную плитку
+    this.addRandomTile();
+    this.addRandomTile();
   }
 
   restart() {
@@ -28,12 +28,12 @@ class Game {
     this.status = 'idle';
 
     this.board = [
-      [0, 0, 0, 0], // Начинаем с фиксированными числами
-      [0, 0, 0, 0], // Пустая строка
-      [0, 0, 0, 0], // Пустая строка
-      [0, 0, 0, 0], // Пустая строка
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
     ];
-    this.start(); // Перезапускаем игру
+    this.start();
   }
 
   getState() {
@@ -95,7 +95,7 @@ class Game {
     }
 
     this.board = newBoard;
-    this.addRandomTile(); // Добавляем новую плитку
+    this.addRandomTile();
 
     if (this.has2048()) {
       this.status = 'win';
@@ -136,7 +136,6 @@ class Game {
   addRandomTile() {
     const empty = [];
 
-    // Находим пустые клетки
     for (let i = 0; i < 4; i++) {
       for (let j = 0; j < 4; j++) {
         if (this.board[i][j] === 0) {
@@ -163,20 +162,20 @@ class Game {
     for (let i = 0; i < 4; i++) {
       for (let j = 0; j < 4; j++) {
         if (this.board[i][j] === 0) {
-          return true; // Если есть пустая клетка
+          return true;
         }
 
         if (j < 3 && this.board[i][j] === this.board[i][j + 1]) {
-          return true; // Если есть одинаковые плитки по горизонтали
+          return true;
         }
 
         if (i < 3 && this.board[i][j] === this.board[i + 1][j]) {
-          return true; // Если есть одинаковые плитки по вертикали
+          return true;
         }
       }
     }
 
-    return false; // Если нет возможных ходов
+    return false;
   }
 }
 
